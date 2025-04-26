@@ -16,23 +16,21 @@ with open('../news_data.json', 'r') as file:
 for data in news_data:
     title = data['title']
     description = data['description']
-    # article = data['article']
 
-    # Get sentiment from title
     sentiment = classifier(title)[0]
 
-    # Generate summary from description
-    summary = summarizer(description, max_length=40, min_length=10, do_sample=False)[0]['summary_text']
-
-    # Extract Named Entities from the article
+    # Summarize only if description is long enough
+    if len(description.split()) < 30:
+        summary = description
+    else:
+        # Increase max_length to be greater than min_length
+        summary = summarizer(description, max_length=100, min_length=30, do_sample=False)[0]['summary_text']
     entities = ner_model(description)
 
-    # Organize entities into categories
     persons = [entity['word'] for entity in entities if entity['entity_group'] == 'PER']
     organizations = [entity['word'] for entity in entities if entity['entity_group'] == 'ORG']
     locations = [entity['word'] for entity in entities if entity['entity_group'] == 'LOC']
 
-    # Print the result
     print("📰 Title:", title)
     print("🔍 Sentiment:", sentiment['label'], f"({round(sentiment['score'] * 100, 2)}%)")
     print("📝 Summary:", summary)

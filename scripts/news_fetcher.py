@@ -30,7 +30,10 @@ def fetch_and_process_news():
                 image_url = entry.media_content[0]['url']
 
             # ✨ AI Processing
-            summary_text = summarizer(description, min_length=20, do_sample=False)[0]['summary_text']
+            if len(description.split()) < 30:
+                summary_text = description
+            else:
+                summary_text = summarizer(description, max_length=100, min_length=30, do_sample=False)[0]['summary_text']
             sentiment = sentiment_classifier(title)[0]
             sentiment_label = sentiment['label']
             sentiment_score = float(sentiment['score'])
@@ -47,7 +50,7 @@ def fetch_and_process_news():
 
             # 🗄️ Save into news table
             insert_query = """
-            INSERT INTO news 
+            INSERT INTO news
             (title, description, summary, sentiment_label, sentiment_score, category, published_at, source, link, image_url, persons, organizations, locations, read_time, popularity)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (link) DO NOTHING;
