@@ -9,7 +9,7 @@ summarizer = pipeline("summarization")
 ner_model = pipeline("ner", model="dbmdz/bert-large-cased-finetuned-conll03-english", aggregation_strategy="simple")
 
 # Load dummy news
-with open('news_data.json', 'r') as file:
+with open('../news_data.json', 'r') as file:
     news_data = json.load(file)
 
 # Process each article
