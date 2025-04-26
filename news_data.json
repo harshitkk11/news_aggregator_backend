@@ -1,0 +1,42 @@
+[
+  {
+    "title": "India defeats Pakistan in World Cup thriller",
+    "description": "India clinched a dramatic win against Pakistan in the ICC World Cup, with Kohli scoring a match-winning century.",
+    "link": "https://thehindu.com/sports/article123",
+    "category": "Sports",
+    "published_at": "2025-04-22T09:30:00Z",
+    "source": "The Hindu"
+  },
+  {
+    "title": "Massive fire breaks out in Delhi market",
+    "description": "A huge fire erupted in Chandni Chowk market, damaging over 50 shops. Firefighters battled the blaze for hours.",
+    "link": "https://indianexpress.com/delhi-fire",
+    "category": "Local",
+    "published_at": "2025-04-22T10:00:00Z",
+    "source": "Indian Express"
+  },
+  {
+    "title": "New AI policy announced by government",
+    "description": "The Indian government unveils a new AI framework to boost innovation and regulate ethical use of artificial intelligence.",
+    "link": "https://thehindu.com/tech/article456",
+    "category": "Technology",
+    "published_at": "2025-04-22T11:00:00Z",
+    "source": "The Hindu"
+  },
+  {
+    "title": "Global Art Expo 2025 opens in Paris",
+    "description": "The highly anticipated Global Art Expo has opened in Paris, showcasing works from renowned artists worldwide.",
+    "link": "https://artdaily.com/news/2025-art-expo",
+    "category": "Art",
+    "published_at": "2025-04-22T12:00:00Z",
+    "source": "Art Daily"
+  },
+  {
+    "title": "Scientists discover new exoplanet in habitable zone",
+    "description": "Astronomers have discovered a new exoplanet located in the habitable zone of its star, opening new possibilities for extraterrestrial life.",
+    "link": "https://space.com/exoplanet-discovery",
+    "category": "Science",
+    "published_at": "2025-04-22T13:00:00Z",
+    "source": "Space.com"
+  }
+]

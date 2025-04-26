@@ -16,16 +16,16 @@ with open('news_data.json', 'r') as file:
 for data in news_data:
     title = data['title']
     description = data['description']
-    article = data['article']
+    # article = data['article']
 
     # Get sentiment from title
     sentiment = classifier(title)[0]
 
     # Generate summary from description
-    summary = summarizer(article, max_length=40, min_length=10, do_sample=False)[0]['summary_text']
+    summary = summarizer(description, max_length=40, min_length=10, do_sample=False)[0]['summary_text']
 
     # Extract Named Entities from the article
-    entities = ner_model(article)
+    entities = ner_model(description)
 
     # Organize entities into categories
     persons = [entity['word'] for entity in entities if entity['entity_group'] == 'PER']
