@@ -1,15 +1,12 @@
 # scripts/news_fetcher.py
-# Fetch RSS ➔ Process with AI ➔ Save into processed_news table
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Fetch RSS ➔ Process with AI ➔ Save into news table
 
 import feedparser
 from transformers import pipeline
 import datetime
 from db import connection, cursor
 
-# 🛠️ Load AI models once (global)
+# 🛠️ Load AI models
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 sentiment_classifier = pipeline("text-classification", model="nlptown/bert-base-multilingual-uncased-sentiment")
 ner_model = pipeline("ner", model="dbmdz/bert-large-cased-finetuned-conll03-english", aggregation_strategy="simple")
@@ -33,7 +30,7 @@ def fetch_and_process_news():
                 image_url = entry.media_content[0]['url']
 
             # ✨ AI Processing
-            summary_text = summarizer(description, max_length=60, min_length=20, do_sample=False)[0]['summary_text']
+            summary_text = summarizer(description, min_length=20, do_sample=False)[0]['summary_text']
             sentiment = sentiment_classifier(title)[0]
             sentiment_label = sentiment['label']
             sentiment_score = float(sentiment['score'])
@@ -44,11 +41,15 @@ def fetch_and_process_news():
             organizations = [entity['word'] for entity in entities if entity['entity_group'] == 'ORG']
             locations = [entity['word'] for entity in entities if entity['entity_group'] == 'LOC']
 
-            # 🗄️ Save into processed_news table
+            # ✨ Default fields for read_time and popularity
+            read_time = 2  # Default 2 min (you can calculate later if needed)
+            popularity = 0  # Default 0 popularity (can increase later based on user likes etc)
+
+            # 🗄️ Save into news table
             insert_query = """
-            INSERT INTO processed_news 
-            (title, description, summary, sentiment_label, sentiment_score, category, published_at, source, link, image_url, persons, organizations, locations)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO news 
+            (title, description, summary, sentiment_label, sentiment_score, category, published_at, source, link, image_url, persons, organizations, locations, read_time, popularity)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (link) DO NOTHING;
             """
 
@@ -58,14 +59,16 @@ def fetch_and_process_news():
                 summary_text,
                 sentiment_label,
                 sentiment_score,
-                "Technology",  # default because RSS feed is technology
+                "Technology",  # Static category for now (later dynamic)
                 datetime.datetime.strptime(published_at, '%a, %d %b %Y %H:%M:%S %z') if published_at else None,
                 source,
                 link,
                 image_url,
                 ', '.join(persons) if persons else None,
                 ', '.join(organizations) if organizations else None,
-                ', '.join(locations) if locations else None
+                ', '.join(locations) if locations else None,
+                read_time,
+                popularity
             ))
             connection.commit()
 
