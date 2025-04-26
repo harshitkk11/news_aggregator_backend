@@ -32,7 +32,7 @@ for data in news_data:
     organizations = [entity['word'] for entity in entities if entity['entity_group'] == 'ORG']
     locations = [entity['word'] for entity in entities if entity['entity_group'] == 'LOC']
 
-    # Print the results
+    # Print the result
     print("📰 Title:", title)
     print("🔍 Sentiment:", sentiment['label'], f"({round(sentiment['score'] * 100, 2)}%)")
     print("📝 Summary:", summary)
