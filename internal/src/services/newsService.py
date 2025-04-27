@@ -1,7 +1,7 @@
 import feedparser
 from transformers import pipeline
-from news_aggregator_backend.src.repositories.newsRepository import NewsRepository
-from news_aggregator_backend.src.db.cursor import get_cursor
+from internal.src.repositories.newsRepository import NewsRepository
+from internal.src.db.cursor import get_cursor
 
 class NewsService:
     def __init__(self):
