@@ -1,17 +1,12 @@
-# main.py
-# Flask Server to handle API routes
-
 from flask import Flask, jsonify
-from scripts.news_fetcher import fetch_and_process_news  # import your function
+from news_aggregator_backend.src.scripts.news_fetcher import fetch_and_process_news
 
 app = Flask(__name__)
 
-# Home route
 @app.route('/')
 def home():
     return "News Aggregator Backend is Live 🚀"
 
-# API to trigger fetching and processing news
 @app.route('/api/fetch-news', methods=['GET'])
 def fetch_news_route():
     fetch_and_process_news()
