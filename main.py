@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from news_aggregator_backend.src.scripts.news_fetcher import fetch_and_process_news
+from internal.src.scripts.news_fetcher import fetch_and_process_news
 
 app = Flask(__name__)
 
