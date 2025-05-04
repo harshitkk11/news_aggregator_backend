@@ -1,5 +1,6 @@
 # main.py
 # Flask Server to handle API routes
+print("🔥 main.py started")  # Add this at the top
 
 from flask import Flask, jsonify
 from scripts.news_fetcher import fetch_and_process_news  # import your function
