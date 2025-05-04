@@ -3,16 +3,16 @@
 
 import feedparser
 import datetime
-from db import connection, cursor
+from config.db import get_db_connection
 
 def fetch_and_process_news():
     from transformers import pipeline
 
     print("⚙️ Loading AI models...")
-    # 🛠️ Load AI models only when the function is called
     summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
     sentiment_classifier = pipeline("text-classification", model="nlptown/bert-base-multilingual-uncased-sentiment")
     ner_model = pipeline("ner", model="dslim/bert-base-NER", aggregation_strategy="simple")
+
     print("📥 Fetching RSS feed...")
     rss_url = "https://indianexpress.com/section/technology/feed/"
     feed = feedparser.parse(rss_url)
@@ -42,11 +42,14 @@ def fetch_and_process_news():
             organizations = [entity['word'] for entity in entities if entity['entity_group'] == 'ORG']
             locations = [entity['word'] for entity in entities if entity['entity_group'] == 'LOC']
 
-            # ✨ Default fields
+            # Default fields
             read_time = 2
             popularity = 0
 
-            # 🗄️ Save into news table
+            # 🔗 Open fresh DB connection per entry
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
             insert_query = """
             INSERT INTO news 
             (title, description, summary, sentiment_label, sentiment_score, category, published_at, source, link, image_url, persons, organizations, locations, read_time, popularity)
@@ -71,10 +74,15 @@ def fetch_and_process_news():
                 read_time,
                 popularity
             ))
-            connection.commit()
+            conn.commit()
+            cursor.close()
+            conn.close()
 
             print(f"✅ Saved news: {title}")
 
         except Exception as e:
             print(f"❌ Error processing {entry.title}: {e}")
-            connection.rollback()
+            if 'conn' in locals():
+                conn.rollback()
+                cursor.close()
+                conn.close()
