@@ -38,5 +38,6 @@ def create_user():
         print("User creation error:", str(e))
         return jsonify({
             "success": False,
-            "message": "An unexpected error occurred."
+            "message": "An unexpected error occurred.",
+            "error":e
         }), 500
