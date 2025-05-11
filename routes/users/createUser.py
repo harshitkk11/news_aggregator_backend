@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
 from config.db import get_db_connection
 
-user_bp = Blueprint("user", __name__)
+create_user_bp = Blueprint("create_user", __name__)  
 
-@user_bp.route("/create-user", methods=["POST"])
+@create_user_bp.route("/create-user", methods=["POST"])
 def create_user():
     try:
         data = request.get_json()

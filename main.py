@@ -6,12 +6,18 @@ import os
 from flask import Flask, jsonify
 from flask_cors import CORS  # 👈 import CORS
 from scripts.news_fetcher import fetch_and_process_news
-from routes.users.createUser import user_bp
+from routes.users.createUser import create_user_bp
+from routes.users.statusUpdate import update_status_bp
+from routes.users.preferences import user_preference_bp
 
 app = Flask(__name__)
 CORS(app)  # 👈 Enable CORS for all routes
 
-app.register_blueprint(user_bp, url_prefix="/api/user")
+
+app.register_blueprint(create_user_bp, url_prefix="/api/user")
+app.register_blueprint(update_status_bp, url_prefix="/api/user")
+app.register_blueprint(user_preference_bp, url_prefix="/api/user")
+
 
 # Home route
 @app.route('/')
