@@ -27,7 +27,7 @@ def fetch_categories():
         cur.close()
         conn.close()
 
-        return jsonify({"categories": categories_list}), 200
+        return jsonify(categories_list), 200
 
     except Exception as e:
         print("Fetch Categories Error:", str(e))
