@@ -17,17 +17,17 @@ def fetch_categories():
         categories = cur.fetchall()
 
         # categories is already a list of dictionaries
-        # categories_list = []
-        # for category in categories:
-        #     categories_list.append({
-        #         "categoryId": category["id"],
-        #         "categoryName": category["title"]
-        #     })
+        categories_list = []
+        for category in categories:
+            categories_list.append({
+                "categoryId": category["id"],
+                "categoryName": category["title"]
+            })
 
         cur.close()
         conn.close()
 
-        return jsonify({"categories": categories}), 200
+        return jsonify({"categories": categories_list}), 200
 
     except Exception as e:
         print("Fetch Categories Error:", str(e))
