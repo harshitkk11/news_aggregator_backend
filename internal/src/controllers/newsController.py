@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from services.newsService import NewsService
+from internal.src.services.newsService import NewsService
 
 class NewsController:
     def __init__(self):
@@ -11,3 +11,5 @@ class NewsController:
             return jsonify(news_data), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+        
+        

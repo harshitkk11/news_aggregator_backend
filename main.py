@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from internal.src.scripts.news_fetcher import fetch_and_process_news
+from internal.src.routes.newsRoutes import set_routes
 
 app = Flask(__name__)
 
@@ -7,10 +7,8 @@ app = Flask(__name__)
 def home():
     return "News Aggregator Backend is Live 🚀"
 
-@app.route('/api/fetch-news', methods=['GET'])
-def fetch_news_route():
-    fetch_and_process_news()
-    return jsonify({"message": "Fetched and processed latest news successfully!"})
+# Register all API routes (including fetch-news and preferences)
+set_routes(app)
 
 if __name__ == '__main__':
     app.run(debug=True)

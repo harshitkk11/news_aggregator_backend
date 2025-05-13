@@ -18,6 +18,16 @@ class NewsService:
 
         for entry in feed.entries:
             try:
+                # Print all available data from RSS feed
+                print("\n=== RSS Entry Data ===")
+                print(f"Title: {entry.title}")
+                print(f"Description: {entry.description}")
+                print(f"Link: {entry.link}")
+                print(f"Published Date: {getattr(entry, 'published', 'Not available')}")
+                print(f"Source: Indian Express")
+                print(f"Image URL: {entry.media_content[0]['url'] if 'media_content' in entry else 'No image'}")
+                
+                # Continue with existing processing
                 title = entry.title
                 description = entry.description
                 link = entry.link
